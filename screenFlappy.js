@@ -1,26 +1,33 @@
 A5.write(0); // GND
 A7.write(1); // VCC
-A6.write(1); // Turn on the backlight
+A6.write(0); // Turn on the backlight
 
 var g; // Define g globally, so that it can be used by other functions
 
-var birdPos = 24;
-var birdVel = 0;
-var obstacles = [
-  { x: 48, y: 20, h: 15 },
-  { x: 84, y: 30, h: 10 }
-];
+var birdPos; // bird screen position
+var birdVel; // bird velocity
+var obstacles; // array of obstacles for flappy bird
 
 
 function onInit() {
   // Setup SPI
   var spi = new SPI();
   spi.setup({ sck:B1, mosi:B10 });
+  clearInterval();
   // Initialise the LCD
   g = require("PCD8544").connect(spi,B13,B14,B15, function() {
-//    clearInterval();
-    setInterval(onFrame, 50);
+     gameStart();    
   });
+}
+
+function gameStart() {
+  birdPos = g.getHeight()/2;
+  birdVel = 0;
+  obstacles = [
+    { x: g.getWidth()/2, y: 20, h: 15 },
+    { x: g.getWidth(), y: 30, h: 10 }
+  ];
+  setInterval(onFrame, 50);
 }
 
 function gameOver() {
@@ -64,8 +71,8 @@ function onFrame() {
   g.flip();
 }
 
+pinMode(B4, "input_pulldown");
 setWatch(function() {
   birdVel -= 2;
-}, BTN, { edge:"rising", repeat:true, debounce: 50});
+}, B4, { edge:"rising", repeat:true, debounce: 50});
 
-onInit();
