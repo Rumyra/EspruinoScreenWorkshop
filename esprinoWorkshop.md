@@ -122,7 +122,7 @@ setWatch(function(e) {
 }, B4, { repeat: true, debounce : 50, edge: "rising" });
 ```
 
-You code should now [look like this](screenChTxt.js].
+You code should now [look like this](screenChTxt.js).
 
 Click the upload button again, and now when you press the button, it should print `Hello Fullstack!`.
 
